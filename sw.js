@@ -3,19 +3,19 @@
  * 版本: v0.9.b.1 (修正 Promise 離線回退邏輯與防崩潰機制)
  */
 
-const CACHE_NAME = 'zen-mantra-v0.9.b.1';
+const CACHE_NAME = 'zen-mantra-v0.9.b.2';
 
 // 欲快取的靜態資源列表 (全數使用相對路徑，適應 GitHub Pages 子目錄)
 const ASSETS_TO_CACHE = [
-  '/',
-  '/index.html',
-  '/css/style.css',
-  '/icons/icon-192.png',
-  '/icons/icon-512.png',
-  '/js/storage.js',
-  '/js/audio.js',
-  '/js/app.js',
-  '/manifest.json'
+  './',
+  './index.html',
+  './css/style.css',
+  './icons/icon-192.png',
+  './icons/icon-512.png',
+  './js/storage.js',
+  './js/audio.js',
+  './js/app.js',
+  './manifest.json'
 ];
 
 // 1. 安裝 Service Worker 並快取核心檔案
@@ -62,8 +62,8 @@ self.addEventListener('fetch', (event) => {
       return fetch(event.request).catch(() => {
         // 3. 斷網且為頁面導航請求時，執行正確的 Promise 鏈式回退
         if (event.request.mode === 'navigate') {
-          return caches.match('/index.html')
-            .then((resp) => resp || caches.match('/'))
+          return caches.match('./index.html')
+            .then((resp) => resp || caches.match('./'))
             .then((resp) => resp || new Response('目前處於離線狀態，且快取不可用。', {
               status: 503,
               headers: { 'Content-Type': 'text/plain; charset=utf-8' }
