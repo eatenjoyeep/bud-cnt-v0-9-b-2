@@ -734,13 +734,14 @@ legend {
   transition: opacity 0.3s ease;
 }
 
+/* 🌸 聖號名稱顯示樣式（平衡清晰度與沉靜質感） */
 .mantra-title-display {
-  color: #FFECB3;                           /* 高亮米暖金 */
-  font-size: 1.95rem;                       /* 📏 實打實放大「字的尺寸」 */
-  font-weight: 700;                         /* ✏️ 字體加粗，讓筆畫更有份量感 */
-  letter-spacing: 0;                        /* 🔒 字距歸零！徹底消除字與字之間的「空氣感」 */
+  color: #F0D295;                           /* 🎨 香檳暖金：比舊版更亮更易讀，同時保留經典古樸格調 */
+  font-size: 1.95rem;
+  font-weight: 700;
+  letter-spacing: 0;
   margin: 0;
-  text-shadow: 0 0 10px rgba(255, 230, 150, 0.45);
+  text-shadow: 0 0 10px rgba(240, 210, 149, 0.4); /* ✨ 同步微調微光柔和度 */
   text-align: center;
   white-space: nowrap;
   overflow: hidden;

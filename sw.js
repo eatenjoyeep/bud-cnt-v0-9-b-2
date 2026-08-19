@@ -3,7 +3,7 @@
  * 版本: v0.9.b.1 (修正 Promise 離線回退邏輯與防崩潰機制)
  */
 
-const CACHE_NAME = 'zen-mantra-v0.9.b.4';
+const CACHE_NAME = 'zen-mantra-v0.9.b.5';
 
 // 欲快取的靜態資源列表 (全數使用相對路徑，適應 GitHub Pages 子目錄)
 const ASSETS_TO_CACHE = [

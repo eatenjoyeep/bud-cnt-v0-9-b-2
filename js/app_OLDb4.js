@@ -125,42 +125,13 @@ function getLunarDateInfo(date) {
     const monthName = lunarMonths[(lMonth - 1) % 12] || "正";
     const dayName = lunarDays[(lDay - 1) % 30] || "初一";
 
-    // 🌸 判斷是否為「地藏十齋日」（兼顧大月 30 天與小月 29 天順延規則）
-    let isTenFastDay = false;
-
-    // 1. 無論大月或小月，這 9 天均為固定齋日
-    if ([1, 8, 14, 15, 18, 23, 24, 28, 29].includes(lDay)) {
-      isTenFastDay = true;
-    } else if (lDay === 30) {
-      // 2. 若當月有三十（大月），三十為齋日
-      isTenFastDay = true;
-    } else if (lDay === 27) {
-      // 3. 若為廿七，檢查 3 天後是否已跨入下一農曆月（即判定當月是否為 29 天的小月）
-      const testDate = new Date(t);
-      testDate.setDate(testDate.getDate() + 3);
-      const futureParts = formatter.formatToParts(testDate);
-      let fMonth = lMonth;
-      for (const part of futureParts) {
-        if (part.type === 'month') fMonth = parseInt(part.value, 10) || 1;
-      }
-      if (fMonth !== lMonth) {
-        isTenFastDay = true; // 確定為小月，廿七自動向前遞補為齋日
-      }
-    }
-
     const key = `${lMonth}-${lDay}`;
     let eventName = BUDDHIST_FESTIVALS[key] || "";
 
     if (!eventName) {
-      if (isTenFastDay) {
-        eventName = "十齋日 · 宜戒殺持齋 · 靜心念佛";
-      } else {
-        eventName = "今日無特殊佛誕 · 靜心持誦";
-      }
-    } else {
-      if (isTenFastDay && !eventName.includes("齋日")) {
-        eventName += " · 十齋日";
-      }
+      if (lDay === 1) eventName = "朔日 · 宜戒殺持齋";
+      else if (lDay === 15) eventName = "望日 · 宜戒殺持齋";
+      else eventName = "今日無特殊佛誕 · 靜心持誦";
     }
 
     return {
