@@ -722,7 +722,7 @@ legend {
   transform: scale(0.96);
 }
 
-/* 🌸 聖號名稱顯示樣式 */
+/* 🌸 聖號名稱顯示樣式（字體實體放大、零空氣感） */
 .mantra-title-container {
   display: flex;
   align-items: center;
@@ -735,24 +735,23 @@ legend {
 }
 
 .mantra-title-display {
-  color: #FFECB3;                           /* 🎨 由原來的暗金 (#E6C280) 改為更亮麗光芒的明亮金 */
-  font-size: 1.85rem;                       /* 📏 字體由原本 1.6rem 調大至 1.85rem */
-  font-weight: 600;                         /* ✏️ 字重由 500 微調至 600，讓文字邊緣更銳利亮眼 */
-  letter-spacing: 0.18em;
+  color: #FFECB3;                           /* 高亮米暖金 */
+  font-size: 1.95rem;                       /* 📏 實打實放大「字的尺寸」 */
+  font-weight: 700;                         /* ✏️ 字體加粗，讓筆畫更有份量感 */
+  letter-spacing: 0;                        /* 🔒 字距歸零！徹底消除字與字之間的「空氣感」 */
   margin: 0;
-  text-shadow: 0 0 12px rgba(255, 230, 150, 0.55); /* ✨ 增強金色光芒微光效果 */
+  text-shadow: 0 0 10px rgba(255, 230, 150, 0.45);
   text-align: center;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 80vw;
+  max-width: 88vw;
   transition: letter-spacing 0.2s ease, font-size 0.2s ease;
 }
 
-/* 較長聖號時的字體同步微調放大 */
 .mantra-title-display.is-long-title {
-  font-size: 1.5rem;                       /* 📏 由原本 1.3rem 同步放大至 1.5rem */
-  letter-spacing: 0.05em;
+  font-size: 1.35rem;
+  letter-spacing: 0;
 }
 
 body.is-dimmed .mantra-title-container {
