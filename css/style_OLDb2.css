@@ -167,27 +167,9 @@ body.is-dimmed #counter-value {
   text-shadow: none !important;
 }
 
-/* 💡 減光模式 (Dimmed Mode) */
-body.is-dimmed #counter-value {
-  opacity: 0.25 !important;
-  text-shadow: none !important;
-}
-
+body.is-dimmed .top-bar,
 body.is-dimmed .bottom-motif {
   opacity: 0.3;
-}
-
-/* 頂部其他元件（膠囊、中間蓮花、紀錄、設定）進行減光 */
-body.is-dimmed .top-left-capsule,
-body.is-dimmed .leaf-motif,
-body.is-dimmed #btn-records,
-body.is-dimmed #btn-settings {
-  opacity: 0.3;
-}
-
-/* 眼睛 / 猴子切換按鈕：全程保持 100% 正常光暗 */
-#btn-toggle-eye {
-  opacity: 1 !important;
 }
 
 /* ==========================================
@@ -735,12 +717,12 @@ legend {
 }
 
 .mantra-title-display {
-  color: #FFECB3;                           /* 🎨 由原來的暗金 (#E6C280) 改為更亮麗光芒的明亮金 */
-  font-size: 1.85rem;                       /* 📏 字體由原本 1.6rem 調大至 1.85rem */
-  font-weight: 600;                         /* ✏️ 字重由 500 微調至 600，讓文字邊緣更銳利亮眼 */
+  color: var(--color-gold);
+  font-size: 1.6rem; 
+  font-weight: 500;
   letter-spacing: 0.18em;
   margin: 0;
-  text-shadow: 0 0 12px rgba(255, 230, 150, 0.55); /* ✨ 增強金色光芒微光效果 */
+  text-shadow: 0 0 8px var(--color-gold-glow);
   text-align: center;
   white-space: nowrap;
   overflow: hidden;
@@ -749,9 +731,8 @@ legend {
   transition: letter-spacing 0.2s ease, font-size 0.2s ease;
 }
 
-/* 較長聖號時的字體同步微調放大 */
 .mantra-title-display.is-long-title {
-  font-size: 1.5rem;                       /* 📏 由原本 1.3rem 同步放大至 1.5rem */
+  font-size: 1.3rem; 
   letter-spacing: 0.05em;
 }
 
