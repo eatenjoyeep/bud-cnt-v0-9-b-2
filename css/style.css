@@ -1,0 +1,780 @@
+/* ==========================================
+   1. 全局重置與 OLED 零耗電主題
+   ========================================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+:root {
+  --bg-color: #000000;          /* 底層背景純黑 (#000000) */
+  --text-main: #d0d0d5;         
+  --text-bright: #ffffff;       
+  --accent-green: #4cd964;      /* 禪意陽光綠 */
+  --dialog-bg: #1c1c1e;         
+  --color-gold: #E6C280;        /* 暖金邊框與標籤 */
+  --color-gold-glow: rgba(230, 194, 128, 0.35);
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  overflow: hidden;
+}
+
+/* ==========================================
+   2. 全螢幕盲點擊區域
+   ========================================== */
+.touch-zone {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 100vw;
+  height: 100dvh;
+  padding: 10px 0 20px 0;
+  cursor: pointer;
+  background-color: var(--bg-color);
+}
+
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 10px 20px;
+  z-index: 10;
+  transition: opacity 0.3s ease;
+}
+
+.top-right-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* 頂部按鈕 */
+.icon-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-bright);
+  font-size: 1.5rem;
+  padding: 8px;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: transform 0.05s ease;
+}
+
+.icon-btn:active {
+  transform: scale(0.85);
+  color: var(--accent-green);
+}
+
+/* ⚙️ 齒輪圖案微調視覺平衡 */
+#btn-settings {
+  font-size: 1.65rem;
+}
+
+/* 🟢 左上角深灰綠框膠囊組合 (緊密包覆 ↺ 重置 + 🎯 1080) */
+.top-left-capsule {
+  display: flex;
+  align-items: center;
+  background: #1a1a1c;
+  border: 1px solid var(--accent-green);
+  border-radius: 20px;
+  padding: 4px 12px;
+  cursor: pointer;
+  box-shadow: 0 0 8px rgba(76, 217, 100, 0.15);
+  transition: transform 0.05s ease, border-color 0.2s ease;
+  user-select: none;
+}
+
+.top-left-capsule:active {
+  transform: scale(0.95);
+}
+
+.capsule-icon {
+  color: var(--accent-green);
+  font-size: 1rem;
+  font-weight: bold;
+  padding-right: 2px;
+}
+
+.capsule-divider {
+  width: 1px;
+  height: 14px;
+  background-color: #333336;
+  margin: 0 8px;
+}
+
+.capsule-target-badge {
+  color: var(--text-bright);
+  font-size: 0.95rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.motif-icon {
+  font-size: 1.4rem;
+  color: var(--accent-green);
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
+}
+
+.bottom-motif {
+  display: flex;
+  justify-content: center;
+  height: 30px;
+}
+
+/* ==========================================
+   3. 核心大字計數器 (減光程度 0.25)
+   ========================================== */
+.counter-display {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+}
+
+#counter-value {
+  font-size: clamp(6rem, 26vw, 11rem);
+  font-weight: 200;
+  color: var(--text-bright);
+  letter-spacing: -3px;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 0 25px rgba(76, 217, 100, 0.25);
+  transition: opacity 0.3s ease, transform 0.05s ease, text-shadow 0.3s ease;
+}
+
+#counter-value.tap-active {
+  transform: scale(0.97);
+}
+
+/* 💡 減光模式 (Dimmed Mode) */
+body.is-dimmed #counter-value {
+  opacity: 0.25 !important;
+  text-shadow: none !important;
+}
+
+body.is-dimmed .top-bar,
+body.is-dimmed .bottom-motif {
+  opacity: 0.3;
+}
+
+/* ==========================================
+   4. Modal 彈窗樣式
+   ========================================== */
+.modal {
+  border: 1px solid #333;
+  border-radius: 16px;
+  background-color: var(--dialog-bg);
+  color: #ffffff;
+  padding: 0;
+  margin: auto;
+  width: 340px;
+  max-width: 92vw;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.9);
+}
+
+.modal::backdrop {
+  background: rgba(0, 0, 0, 0.85);
+}
+
+.modal-content {
+  padding: 20px;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.modal-content h2 {
+  font-size: 1.25rem;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.modal-content p {
+  font-size: 0.95rem;
+  color: #aaa;
+  margin-bottom: 12px;
+}
+
+.modal-content hr {
+  border: none;
+  border-top: 1px solid #333;
+  margin-bottom: 14px;
+}
+
+fieldset {
+  border: none;
+  margin-bottom: 14px;
+}
+
+/* ⚙️ 齒輪設定彈窗分組標題 (金色側邊條區隔) */
+legend {
+  font-size: 0.95rem;
+  color: var(--color-gold);
+  font-weight: 600;
+  margin-bottom: 8px;
+  padding-left: 8px;
+  border-left: 3px solid var(--color-gold);
+  line-height: 1.2;
+}
+
+.vertical-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: left;
+}
+
+.vertical-field input[type="text"] {
+  width: 100%;
+  padding: 6px 10px;
+  background-color: #121212;
+  border: 1px solid #333333;
+  border-radius: 6px;
+  color: #FFD700;
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+/* ⚙️ 齒輪設定彈窗內的文字：改為純白 (#ffffff) 與銳利字重，確保最高對比 */
+.toggle-label, .input-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  font-size: 1rem;
+  color: #ffffff;      /* 改為純白，徹底解決對比偏低問題 */
+  font-weight: 500;    /* 微調字重，讓放大後的文字邊緣更銳利清析 */
+}
+
+/* ⚙️ 防誤觸門檻數字輸入框（修復原本太長與未配樣式問題） */
+#setting-streak-threshold {
+  width: 65px;
+  padding: 4px 6px;
+  font-size: 0.95rem;
+  background: #000000;
+  border: 1px solid var(--accent-green);
+  color: #ffffff;
+  border-radius: 6px;
+  text-align: center;
+}
+
+.margin-top-sm {
+  margin-top: 8px;
+}
+
+/* ==========================================
+   🎯 持誦管理 Modal 3 組獨立卡片樣式
+   ========================================== */
+.preset-cards-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 55vh;
+  overflow-y: auto;
+  margin-bottom: 12px;
+}
+
+.preset-card {
+  background-color: #121214;
+  border: 1px solid #2c2c2e;
+  border-radius: 12px;
+  padding: 12px 14px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* 啟用中卡片：亮起暖金邊框 */
+.preset-card.is-active-card {
+  border: 1px solid var(--color-gold);
+  box-shadow: 0 0 10px var(--color-gold-glow);
+}
+
+.preset-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.preset-tag {
+  font-size: 0.85rem;
+  color: #8e8e93;
+  font-weight: 600;
+}
+
+.active-badge {
+  display: none;
+  font-size: 0.75rem;
+  color: var(--color-gold);
+  border: 1px solid var(--color-gold);
+  padding: 2px 6px;
+  border-radius: 10px;
+  background: rgba(230, 194, 128, 0.1);
+}
+
+.preset-card.is-active-card .active-badge {
+  display: inline-block;
+}
+
+.card-progress-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.88rem;
+  color: #d1d1d6;
+  margin: 8px 0;
+}
+
+/* 🟢 卡片內「已完成」數字：亮綠光 + 加粗 + 微微放大 */
+.card-progress-row strong {
+  color: var(--accent-green);
+  font-weight: 700;
+  font-size: 1.05rem;
+  text-shadow: 0 0 6px rgba(76, 217, 100, 0.35);
+}
+
+.inline-target-label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.input-target-inline {
+  width: 65px;
+  padding: 4px 6px;
+  font-size: 0.9rem;
+  background: #000;
+  border: 1px solid var(--accent-green);
+  color: #fff;
+  border-radius: 6px;
+  text-align: center;
+}
+
+.card-action-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.btn-card-select {
+  background-color: var(--color-gold);
+  color: #000;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  flex: 1;
+}
+
+.btn-card-select:disabled {
+  background-color: #2c2c2e;
+  color: #636366;
+  cursor: default;
+}
+
+.btn-card-reset {
+  background-color: transparent;
+  color: #ff453a;
+  border: 1px solid #ff453a;
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-card-reset:active {
+  background-color: rgba(255, 69, 58, 0.2);
+}
+
+.modal-danger-zone {
+  margin-top: 10px;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.btn-danger-outline {
+  width: 100%;
+  background: transparent;
+  color: #ff3b30;
+  border: 1px solid #ff3b30;
+  padding: 8px 0;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-danger-outline:active {
+  background: rgba(255, 59, 48, 0.15);
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.between-actions {
+  justify-content: space-between;
+}
+
+.center-actions {
+  justify-content: center;
+}
+
+.modal-actions button {
+  background-color: var(--accent-green);
+  color: #000;
+  border: none;
+  padding: 10px 20px;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.modal-actions .btn-secondary {
+  background-color: #3a3a3c;
+  color: #fff;
+}
+
+.modal-actions .btn-danger {
+  background-color: #ff3b30;
+  color: #fff;
+}
+
+.btn-danger-text {
+  background: transparent !important;
+  color: #ff3b30 !important;
+  border: none !important;
+  padding: 0 !important;
+  font-size: 0.9rem !important;
+  text-decoration: underline;
+}
+
+/* 📊 歷史紀錄 Grid 優化 */
+.records-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.record-item {
+  display: flex;
+  flex-direction: column;
+  background: #121214;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #222225;
+}
+
+.record-item.highlight-item {
+  border-color: var(--accent-green);
+}
+
+.record-label {
+  font-size: 0.85rem;
+  color: #b0b0b5;
+}
+
+.record-value {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: var(--accent-green);
+  margin-top: 2px;
+}
+
+.record-subhint {
+  font-size: 0.8rem;
+  color: #8e8e93;
+}
+
+/* ==========================================
+   5. 禪意歡迎畫面與返回退出卡片
+   ========================================== */
+.welcome-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100dvh;
+  background-color: var(--bg-color);
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+.welcome-overlay.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.welcome-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 440px;
+  width: 100%;
+}
+
+.welcome-header {
+  margin-bottom: 24px;
+}
+
+.welcome-motif {
+  font-size: clamp(3.2rem, 11vw, 4.2rem);
+  display: block;
+  margin-bottom: 8px;
+  color: var(--accent-green);
+}
+
+.welcome-title {
+  font-size: clamp(2rem, 7.5vw, 2.8rem);
+  font-weight: 300;
+  letter-spacing: 6px;
+  color: var(--text-bright);
+}
+
+.welcome-date-card {
+  background: #121214;
+  border: 1px solid #222225;
+  border-radius: 20px;
+  padding: 20px 24px;
+  width: 100%;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+}
+
+.solar-date {
+  font-size: clamp(1.1rem, 3.8vw, 1.25rem);
+  color: #aaa;
+  margin-bottom: 6px;
+}
+
+.lunar-date {
+  font-size: clamp(1.5rem, 6vw, 2.1rem);
+  font-weight: 700;
+  color: var(--accent-green);
+  margin-bottom: 10px;
+}
+
+.buddhist-event {
+  font-size: clamp(1rem, 3.6vw, 1.15rem);
+  color: #8e8e93;
+  padding-top: 10px;
+  border-top: 1px dashed #2c2c2e;
+}
+
+.welcome-quote-card {
+  padding: 12px 10px;
+  margin-bottom: 36px;
+}
+
+.buddhist-quote {
+  font-size: clamp(1.2rem, 4.5vw, 1.55rem);
+  line-height: 1.8;
+  color: #d1d1d6;
+  font-style: italic;
+  font-weight: 300;
+}
+
+.welcome-action {
+  width: 100%;
+}
+
+.welcome-hint {
+  width: 100%;
+  padding: 16px 0;
+  font-size: clamp(1.1rem, 4vw, 1.25rem);
+  font-weight: 600;
+  color: var(--accent-green);
+  border: 1px solid rgba(76, 217, 100, 0.4);
+  background: rgba(76, 217, 100, 0.08);
+  border-radius: 35px;
+  letter-spacing: 2px;
+  box-shadow: 0 0 15px rgba(76, 217, 100, 0.15);
+  animation: pulse-border 2.5s infinite ease-in-out;
+}
+
+@keyframes pulse-border {
+  0%, 100% {
+    opacity: 0.8;
+    transform: scale(1);
+    box-shadow: 0 0 12px rgba(76, 217, 100, 0.15);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.02);
+    box-shadow: 0 0 22px rgba(76, 217, 100, 0.35);
+  }
+}
+
+.exit-card-overlay {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100vw;
+  z-index: 9999;
+  padding: 16px 16px 28px 16px;
+  display: flex;
+  justify-content: center;
+  transition: transform 0.3s cubic-bezier(0.1, 0.9, 0.2, 1), opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.exit-card-overlay.is-hidden {
+  transform: translateY(100%);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.exit-card-content {
+  background: rgba(28, 28, 30, 0.94);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid #3a3a3c;
+  border-radius: 22px;
+  padding: 20px 18px;
+  width: 100%;
+  max-width: 440px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.85);
+}
+
+.exit-card-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+}
+
+.btn-exit-continue {
+  width: 100%;
+  padding: 16px 0;
+  font-size: clamp(1.1rem, 4.2vw, 1.35rem);
+  font-weight: 700;
+  border-radius: 16px;
+  border: none;
+  background-color: var(--accent-green);
+  color: #000000;
+  box-shadow: 0 4px 15px rgba(76, 217, 100, 0.25);
+  cursor: pointer;
+  letter-spacing: 1px;
+}
+
+.btn-exit-leave {
+  width: 100%;
+  padding: 14px 0;
+  font-size: clamp(1rem, 3.8vw, 1.2rem);
+  font-weight: 500;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 149, 0, 0.35);
+  background: rgba(255, 149, 0, 0.08);
+  color: #ff9500;
+  cursor: pointer;
+}
+
+.btn-exit-continue:active, .btn-exit-leave:active {
+  transform: scale(0.96);
+}
+
+/* 🌸 聖號名稱顯示樣式 */
+.mantra-title-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 14px;
+  margin-bottom: 2px;
+  user-select: none;
+  transition: opacity 0.3s ease;
+}
+
+.mantra-title-display {
+  color: var(--color-gold);
+  font-size: 1.6rem; 
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  margin: 0;
+  text-shadow: 0 0 8px var(--color-gold-glow);
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 80vw;
+  transition: letter-spacing 0.2s ease, font-size 0.2s ease;
+}
+
+.mantra-title-display.is-long-title {
+  font-size: 1.3rem; 
+  letter-spacing: 0.05em;
+}
+
+body.is-dimmed .mantra-title-container {
+  opacity: 0.25;
+}
+
+/* ==========================================
+   6. 目標圓滿彈窗專用按鈕 (垂直全寬，風格統一)
+   ========================================== */
+.goal-actions {
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 8px;
+}
+
+.goal-actions button {
+  width: 100%;
+  padding: 14px 0;
+  font-size: clamp(1.1rem, 4.2vw, 1.35rem);
+  font-weight: 700;
+  letter-spacing: 1px;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+
+.goal-actions #btn-complete-done {
+  background-color: var(--accent-green);
+  color: #000;
+  border: none;
+  box-shadow: 0 4px 15px rgba(76, 217, 100, 0.25);
+}
+
+.goal-actions .btn-back-chant {
+  background: rgba(255, 149, 0, 0.08);
+  color: #ff9500;
+  border: 1px solid rgba(255, 149, 0, 0.35);
+  font-weight: 500;
+  box-shadow: none;
+}
+
+.goal-actions button:active {
+  transform: scale(0.96);
+}

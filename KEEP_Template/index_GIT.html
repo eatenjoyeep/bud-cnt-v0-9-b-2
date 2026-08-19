@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="robots" content="noindex, nofollow">
+  <title>極簡念佛計數器 - 微光無干擾</title>
+  <!-- 🌟 Favicon 與 iOS Apple Touch Icon 設定 -->
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#000000">
+</head>
+<body>
+
+  <!-- 🌸 禪意歡迎畫面 (State 1 初始覆蓋層) -->
+  <div id="welcome-overlay" class="welcome-overlay">
+    <div class="welcome-content">
+      <div class="welcome-header">
+        <span class="welcome-motif">🪷</span>
+        <h1 class="welcome-title">禪意念佛</h1>
+      </div>
+      
+      <div class="welcome-date-card">
+        <p id="welcome-solar-date" class="solar-date">----年--月--日</p>
+        <p id="welcome-lunar-date" class="lunar-date">----年 --月--</p>
+        <p id="welcome-buddhist-event" class="buddhist-event">今日無特殊佛誕 · 靜心持誦</p>
+      </div>
+
+      <div class="welcome-quote-card">
+        <p id="welcome-quote" class="buddhist-quote">「身如菩提樹，心如明鏡臺，時時勤拂拭，勿使惹塵埃。」</p>
+      </div>
+
+      <div class="welcome-action">
+        <div class="welcome-hint">輕觸螢幕任意處 · 開始持誦</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 全螢幕盲點擊主區域 (底層背景全程純黑) -->
+  <main class="touch-zone" id="touch-zone">
+    
+    <!-- 頂部功能列 -->
+    <header class="top-bar">
+      <!-- 左側：深灰膠囊按鈕 (保留綠色邊框，緊密包覆 重置 ↺ 與當前目標 🎯 1080) -->
+      <div class="top-left-capsule" id="btn-target" title="點擊開啟持誦與目標管理">
+        <span class="capsule-icon">↺</span>
+        <div class="capsule-divider"></div>
+        <div class="capsule-target-badge">
+          🎯 <span id="target-display">1080</span>
+        </div>
+      </div>
+      
+      <!-- 中央視覺標誌：蓮花符號 -->
+      <div class="leaf-motif">
+        <span class="motif-icon">🪷</span>
+      </div>
+      
+      <!-- 右側群組：眼睛減光 + 歷史紀錄 + 系統設定 -->
+      <div class="top-right-group">
+        <button id="btn-toggle-eye" class="icon-btn" aria-label="隱藏/顯示數字" title="切換減光模式">👁</button>
+        <button id="btn-records" class="icon-btn" aria-label="查看紀錄" title="持誦紀錄">📊</button>
+        <button id="btn-settings" class="icon-btn" aria-label="開啟設定" title="開啟設定">⚙</button>
+      </div>
+    </header>
+
+    <!-- 🌸 頂部持誦項目名稱區 (無箭嘴，靜態暖金大字) -->
+    <div id="mantra-title-container" class="mantra-title-container">
+      <h2 id="mantra-title-display" class="mantra-title-display">南無阿彌陀佛</h2>
+    </div>
+
+    <!-- 核心計數顯示區 -->
+    <section class="counter-display">
+      <h1 id="counter-value">0</h1>
+    </section>
+
+    <!-- 底部裝飾 Motif -->
+    <footer class="bottom-motif">
+      <span class="motif-icon">🪷</span>
+    </footer>
+
+  </main>
+
+  <!-- 1. 🎯 持誦與目標管理 Modal (3 組深灰卡片，包含名稱、目標、已完成及單組/總重置) -->
+  <dialog id="target-dialog" class="modal">
+    <div class="modal-content">
+      <h2>持誦項目與目標管理</h2>
+      <hr>
+      <div class="preset-cards-container">
+        
+        <!-- 組合一 -->
+        <div class="preset-card" id="preset-card-0">
+          <div class="preset-card-header">
+            <span class="preset-tag">組合一</span>
+            <span class="active-badge" id="active-badge-0">啟用中</span>
+          </div>
+          <label class="vertical-field">
+            <span>名稱：</span>
+            <input type="text" id="setting-title-0" maxlength="15" placeholder="例如：南無阿彌陀佛">
+          </label>
+          <div class="card-progress-row">
+            <span>已完成：<strong id="card-count-0">0</strong> 次</span>
+            <label class="inline-target-label">
+              <span>目標：</span>
+              <input type="number" id="setting-target-0" min="0" max="999999" class="input-target-inline">
+              <span>次</span>
+            </label>
+          </div>
+          <div class="card-action-group">
+            <button type="button" class="btn-card-select" data-index="0">切換至此組合</button>
+            <button type="button" class="btn-card-reset" data-index="0">↺ 清空本組</button>
+          </div>
+        </div>
+
+        <!-- 組合二 -->
+        <div class="preset-card" id="preset-card-1">
+          <div class="preset-card-header">
+            <span class="preset-tag">組合二</span>
+            <span class="active-badge" id="active-badge-1">啟用中</span>
+          </div>
+          <label class="vertical-field">
+            <span>名稱：</span>
+            <input type="text" id="setting-title-1" maxlength="15" placeholder="例如：南無觀世音菩薩">
+          </label>
+          <div class="card-progress-row">
+            <span>已完成：<strong id="card-count-1">0</strong> 次</span>
+            <label class="inline-target-label">
+              <span>目標：</span>
+              <input type="number" id="setting-target-1" min="0" max="999999" class="input-target-inline">
+              <span>次</span>
+            </label>
+          </div>
+          <div class="card-action-group">
+            <button type="button" class="btn-card-select" data-index="1">切換至此組合</button>
+            <button type="button" class="btn-card-reset" data-index="1">↺ 清空本組</button>
+          </div>
+        </div>
+
+        <!-- 組合三 -->
+        <div class="preset-card" id="preset-card-2">
+          <div class="preset-card-header">
+            <span class="preset-tag">組合三</span>
+            <span class="active-badge" id="active-badge-2">啟用中</span>
+          </div>
+          <label class="vertical-field">
+            <span>名稱：</span>
+            <input type="text" id="setting-title-2" maxlength="15" placeholder="例如：大悲咒">
+          </label>
+          <div class="card-progress-row">
+            <span>已完成：<strong id="card-count-2">0</strong> 次</span>
+            <label class="inline-target-label">
+              <span>目標：</span>
+              <input type="number" id="setting-target-2" min="0" max="999999" class="input-target-inline">
+              <span>次</span>
+            </label>
+          </div>
+          <div class="card-action-group">
+            <button type="button" class="btn-card-select" data-index="2">切換至此組合</button>
+            <button type="button" class="btn-card-reset" data-index="2">↺ 清空本組</button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- 底部總重置按鈕與儲存 -->
+      <div class="modal-danger-zone">
+        <button id="btn-reset-all-presets" type="button" class="btn-danger-outline">⚠️ 一鍵清空全部 3 組</button>
+      </div>
+
+      <div class="modal-actions">
+        <button id="btn-save-target" type="button">確定並儲存</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- 2. 📊 歷史紀錄 Modal -->
+  <dialog id="records-dialog" class="modal">
+    <div class="modal-content">
+      <h2>🪷 持誦功課紀錄</h2>
+      <hr>
+      <div class="records-grid">
+        <div class="record-item highlight-item">
+          <span class="record-label">🔥 連續持誦天數</span>
+          <span class="record-value" id="record-streak">0 天</span>
+          <span class="record-subhint" id="record-threshold-hint">(每日需滿 21 次)</span>
+        </div>
+        <div class="record-item">
+          <span class="record-label">☀️ 今日累計次數</span>
+          <span class="record-value" id="record-today">0 次</span>
+        </div>
+        <div class="record-item">
+          <span class="record-label">🌙 本月累計次數</span>
+          <span class="record-value" id="record-month">0 次</span>
+        </div>
+      </div>
+      <hr>
+      <div class="modal-actions between-actions">
+        <button id="btn-reset-history" type="button" class="btn-danger-text">↺ 重置歷史紀錄</button>
+        <button id="btn-close-records" type="button">關閉</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- 3. ⚙️ 音效與防呆設定 Modal (保留音效、防呆及每天21次連續天數門檻) -->
+  <dialog id="settings-dialog" class="modal">
+    <form method="dialog" class="modal-content">
+      <h2>念佛設定</h2>
+      <hr>
+      <fieldset>
+        <legend>音效與觸覺</legend>
+        <label class="toggle-label">
+          <span>木魚敲擊聲</span>
+          <input type="checkbox" id="setting-sound" checked>
+        </label>
+        <label class="toggle-label">
+          <span>圓滿提示聲</span>
+          <input type="checkbox" id="setting-sound-chime" checked>
+        </label>
+        <label class="toggle-label">
+          <span>觸覺震動反饋</span>
+          <input type="checkbox" id="setting-vibrate" checked>
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>防誤觸機制 </legend>
+        <label class="toggle-label">
+          <span>個別組合清空時顯示確認</span>
+          <input type="checkbox" id="setting-confirm-reset" checked>
+        </label>
+        <label class="input-label inline-target margin-top-sm">
+          <span>計算連續天數時防誤觸 (次)：</span>
+          <input type="number" id="setting-streak-threshold" min="1" max="9999" value="21">
+        </label>
+      </fieldset>
+
+      <div class="modal-actions">
+        <button id="btn-save-settings" type="button">確定</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- 4. 目標圓滿提示 Modal (只顯示完成訊息，不歸零，按鈕垂直全寬) -->
+  <dialog id="goal-dialog" class="modal">
+    <div class="modal-content text-center">
+      <h2>🎉 目標已圓滿！</h2>
+      <p id="goal-message">恭喜完成持誦。</p>
+      <hr>
+      <div class="modal-actions goal-actions">
+        <button id="btn-complete-done" type="button">已完成功課</button>
+        <button id="btn-back-to-chant" type="button" class="btn-back-chant">返回繼續持誦</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- 5. 二次確認重置 Modal -->
+  <dialog id="reset-dialog" class="modal">
+    <div class="modal-content">
+      <h2 id="reset-modal-title">確認歸零？</h2>
+      <p id="reset-modal-msg">此操作將重置目前的持誦計數。</p>
+      <div class="modal-actions">
+        <button id="btn-cancel-reset" type="button" class="btn-secondary">取消</button>
+        <button id="btn-confirm-reset" type="button" class="btn-danger">歸零</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- 📱 6. 返回退出確認底欄 (上下堆疊結構) -->
+  <div id="exit-card" class="exit-card-overlay is-hidden">
+    <div class="exit-card-content">
+      <div class="exit-card-actions">
+        <button id="btn-continue-app" class="btn-exit-continue" type="button">繼續持誦</button>
+        <button id="btn-leave-app" class="btn-exit-leave" type="button">再按一次返回鍵退出</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 載入核心模組 -->
+  <script src="js/storage.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/app.js"></script>
+
+  <!-- 禁用手指縮放手勢腳本 -->
+  <script>
+    // 阻擋 iOS Safari / PWA 的雙指縮放手勢
+    document.addEventListener('gesturestart', function (e) {
+      e.preventDefault();
+    });
+
+    // 阻擋多於一指的觸控操作 (防止雙指 pinch zoom)
+    document.addEventListener('touchstart', function (e) {
+      if (e.touches.length > 1) {
+        e.preventDefault();
+      }
+    }, { passive: false });
+  </script>
+
+  <!-- Service Worker PWA 離線註冊腳本 -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js', { updateViaCache: 'none' })
+          .then(reg => {
+            console.log('PWA Service Worker 註冊成功 (v0.9.b.1):', reg.scope);
+            reg.update();
+          })
+          .catch(err => console.error('PWA Service Worker 註冊失敗:', err));
+      });
+    }
+  </script>
+</body>
+</html>

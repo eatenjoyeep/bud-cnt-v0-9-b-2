@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <!-- 滿版深邃琉璃藍漸層 -->
+    <linearGradient id="bg-lapis" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#122B48" />   <!-- 頂部沉穩琉璃藍 -->
+      <stop offset="60%" stop-color="#061220" />  <!-- 中段深夜藍 -->
+      <stop offset="100%" stop-color="#010408" /> <!-- 底部極深藍黑 -->
+    </linearGradient>
+
+    <!-- 3D 金色漸層 -->
+    <radialGradient id="bead-3d" cx="35%" cy="30%" r="65%">
+      <stop offset="0%" stop-color="#FFF3D1" />
+      <stop offset="30%" stop-color="#E5C158" />
+      <stop offset="70%" stop-color="#9E7A1C" />
+      <stop offset="100%" stop-color="#4A3405" />
+    </radialGradient>
+
+    <!-- 立體 DropShadow 陰影 -->
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="5" stdDeviation="7" flood-color="#000000" flood-opacity="0.9"/>
+    </filter>
+  </defs>
+
+  <!-- 滿版琉璃藍底色 -->
+  <rect width="512" height="512" fill="url(#bg-lapis)"/>
+
+  <!-- 主體念珠與流蘇 (等比例放大 25% 置中) -->
+  <g transform="translate(256, 235) scale(1.25) translate(-256, -260)">
+
+    <!-- 暗金穿線 -->
+    <path d="M 256 120 Q 390 130 380 270 Q 360 370 256 370 Q 152 370 132 270 Q 122 130 256 120 Z"
+          fill="none" stroke="#664D12" stroke-width="4" />
+
+    <!-- 18 顆立體念珠群 -->
+    <g filter="url(#shadow)">
+      <circle cx="256" cy="120" r="18" fill="url(#bead-3d)"/>
+      <circle cx="305" cy="128" r="18" fill="url(#bead-3d)"/>
+      <circle cx="348" cy="152" r="18" fill="url(#bead-3d)"/>
+      <circle cx="378" cy="190" r="18" fill="url(#bead-3d)"/>
+      <circle cx="388" cy="236" r="18" fill="url(#bead-3d)"/>
+      <circle cx="378" cy="283" r="18" fill="url(#bead-3d)"/>
+      <circle cx="350" cy="322" r="18" fill="url(#bead-3d)"/>
+      <circle cx="308" cy="350" r="18" fill="url(#bead-3d)"/>
+
+      <circle cx="207" cy="128" r="18" fill="url(#bead-3d)"/>
+      <circle cx="164" cy="152" r="18" fill="url(#bead-3d)"/>
+      <circle cx="134" cy="190" r="18" fill="url(#bead-3d)"/>
+      <circle cx="124" cy="236" r="18" fill="url(#bead-3d)"/>
+      <circle cx="134" cy="283" r="18" fill="url(#bead-3d)"/>
+      <circle cx="162" cy="322" r="18" fill="url(#bead-3d)"/>
+      <circle cx="204" cy="350" r="18" fill="url(#bead-3d)"/>
+
+      <circle cx="256" cy="362" r="19" fill="url(#bead-3d)"/>
+      <circle cx="256" cy="390" r="15" fill="url(#bead-3d)"/>
+      <circle cx="256" cy="412" r="10" fill="url(#bead-3d)"/>
+    </g>
+
+    <!-- 絲線流蘇 -->
+    <g stroke="url(#bead-3d)" stroke-width="2.5" stroke-linecap="round" opacity="0.9">
+      <path d="M 252 422 L 244 470" />
+      <path d="M 254 422 L 251 475" />
+      <path d="M 258 422 L 261 475" />
+      <path d="M 260 422 L 268 470" />
+    </g>
+
+  </g>
+</svg>
