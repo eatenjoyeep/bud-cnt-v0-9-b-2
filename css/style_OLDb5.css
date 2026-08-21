@@ -167,6 +167,12 @@ body.is-dimmed #counter-value {
   text-shadow: none !important;
 }
 
+/* 💡 減光模式 (Dimmed Mode) */
+body.is-dimmed #counter-value {
+  opacity: 0.25 !important;
+  text-shadow: none !important;
+}
+
 body.is-dimmed .bottom-motif {
   opacity: 0.3;
 }
@@ -194,7 +200,7 @@ body.is-dimmed #btn-settings {
   color: #ffffff;
   padding: 0;
   margin: auto;
-  width: 380px;               /* 擴大寬度 (原 340px) 賦予文字充裕空間 */
+  width: 340px;
   max-width: 92vw;
   box-shadow: 0 10px 30px rgba(0,0,0,0.9);
 }
@@ -204,7 +210,7 @@ body.is-dimmed #btn-settings {
 }
 
 .modal-content {
-  padding: 18px 16px;          /* 優化兩側留白 (原 20px)，讓大字不擠壓 */
+  padding: 20px;
 }
 
 .text-center {
@@ -212,14 +218,13 @@ body.is-dimmed #btn-settings {
 }
 
 .modal-content h2 {
-  font-size: 1.25rem;          /* 標題 20px (業界標準) */
-  font-weight: 700;
+  font-size: 1.25rem;
   margin-bottom: 8px;
   text-align: center;
 }
 
 .modal-content p {
-  font-size: 0.875rem;         /* 輔助說明 14px (業界標準) */
+  font-size: 0.95rem;
   color: #aaa;
   margin-bottom: 12px;
 }
@@ -237,7 +242,7 @@ fieldset {
 
 /* ⚙️ 齒輪設定彈窗分組標題 (金色側邊條區隔) */
 legend {
-  font-size: 1rem;             /* 主要文字 16px */
+  font-size: 0.95rem;
   color: var(--color-gold);
   font-weight: 600;
   margin-bottom: 8px;
@@ -253,19 +258,14 @@ legend {
   text-align: left;
 }
 
-.vertical-field span {
-  font-size: 0.875rem;         /* 輔助標籤 14px */
-  color: #b0b0b5;
-}
-
 .vertical-field input[type="text"] {
   width: 100%;
-  padding: 8px 10px;
+  padding: 6px 10px;
   background-color: #121212;
   border: 1px solid #333333;
-  border-radius: 8px;
+  border-radius: 6px;
   color: #FFD700;
-  font-size: 1rem;             /* 主要文字 16px (防止 iOS 自動對焦縮放) */
+  font-size: 1.15rem;
   font-weight: 700;
 }
 
@@ -275,16 +275,16 @@ legend {
   justify-content: space-between;
   align-items: center;
   padding: 8px 0;
-  font-size: 1rem;             /* 主要文字 16px (業界標準) */
+  font-size: 1rem;
   color: #ffffff;      /* 改為純白，徹底解決對比偏低問題 */
   font-weight: 500;    /* 微調字重，讓放大後的文字邊緣更銳利清析 */
 }
 
 /* ⚙️ 防誤觸門檻數字輸入框（修復原本太長與未配樣式問題） */
 #setting-streak-threshold {
-  width: 70px;
-  padding: 6px;
-  font-size: 1rem;             /* 主要數字 16px */
+  width: 65px;
+  padding: 4px 6px;
+  font-size: 0.95rem;
   background: #000000;
   border: 1px solid var(--accent-green);
   color: #ffffff;
@@ -330,17 +330,17 @@ legend {
 }
 
 .preset-tag {
-  font-size: 0.875rem;         /* 輔助標籤 14px (業界標準) */
+  font-size: 0.85rem;
   color: #8e8e93;
   font-weight: 600;
 }
 
 .active-badge {
   display: none;
-  font-size: 0.8125rem;        /* 13px 狀態徽章 */
+  font-size: 0.75rem;
   color: var(--color-gold);
   border: 1px solid var(--color-gold);
-  padding: 2px 8px;
+  padding: 2px 6px;
   border-radius: 10px;
   background: rgba(230, 194, 128, 0.1);
 }
@@ -353,16 +353,16 @@ legend {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 1rem;             /* 主要文字 16px (業界標準) */
+  font-size: 0.88rem;
   color: #d1d1d6;
-  margin: 10px 0;
+  margin: 8px 0;
 }
 
-/* 🟢 卡片內「已完成」數字：亮綠光 + 加粗 + 醒目放大至 20px */
+/* 🟢 卡片內「已完成」數字：亮綠光 + 加粗 + 微微放大 */
 .card-progress-row strong {
   color: var(--accent-green);
   font-weight: 700;
-  font-size: 1.25rem;          /* 醒目完成數字 20px */
+  font-size: 1.05rem;
   text-shadow: 0 0 6px rgba(76, 217, 100, 0.35);
 }
 
@@ -370,19 +370,17 @@ legend {
   display: flex;
   align-items: center;
   gap: 4px;
-  font-size: 1rem;             /* 主要文字 16px */
 }
 
 .input-target-inline {
-  width: 75px;
-  padding: 6px;
-  font-size: 1rem;             /* 輸入框數字 16px (業界標準) */
+  width: 65px;
+  padding: 4px 6px;
+  font-size: 0.9rem;
   background: #000;
   border: 1px solid var(--accent-green);
   color: #fff;
   border-radius: 6px;
   text-align: center;
-  font-weight: 600;
 }
 
 .card-action-group {
@@ -397,10 +395,10 @@ legend {
   background-color: var(--color-gold);
   color: #000;
   border: none;
-  padding: 8px 12px;
-  border-radius: 8px;
+  padding: 6px 12px;
+  border-radius: 6px;
   font-weight: 600;
-  font-size: 1rem;             /* 主要選擇按鈕 16px (業界標準) */
+  font-size: 0.85rem;
   cursor: pointer;
   flex: 1;
 }
@@ -415,9 +413,9 @@ legend {
   background-color: transparent;
   color: #ff453a;
   border: 1px solid #ff453a;
-  padding: 7px 10px;
-  border-radius: 8px;
-  font-size: 0.875rem;         /* 輔助動作按鈕 14px (業界標準) */
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-size: 0.82rem;
   cursor: pointer;
   transition: background-color 0.2s ease;
 }
@@ -437,9 +435,9 @@ legend {
   background: transparent;
   color: #ff3b30;
   border: 1px solid #ff3b30;
-  padding: 10px 0;
+  padding: 8px 0;
   border-radius: 8px;
-  font-size: 0.875rem;         /* 輔助清空按鈕 14px (業界標準) */
+  font-size: 0.88rem;
   font-weight: bold;
   cursor: pointer;
 }
@@ -467,11 +465,11 @@ legend {
   background-color: var(--accent-green);
   color: #000;
   border: none;
-  padding: 12px 24px;
+  padding: 10px 20px;
   font-weight: bold;
   border-radius: 8px;
   cursor: pointer;
-  font-size: 1rem;             /* 底部確認按鈕 16px (業界標準) */
+  font-size: 0.95rem;
 }
 
 .modal-actions .btn-secondary {
@@ -489,7 +487,7 @@ legend {
   color: #ff3b30 !important;
   border: none !important;
   padding: 0 !important;
-  font-size: 0.875rem !important;/* 輔助重置文字 14px */
+  font-size: 0.9rem !important;
   text-decoration: underline;
 }
 
@@ -515,19 +513,19 @@ legend {
 }
 
 .record-label {
-  font-size: 0.875rem;         /* 輔助文字 14px */
+  font-size: 0.85rem;
   color: #b0b0b5;
 }
 
 .record-value {
-  font-size: 1.25rem;          /* 醒目數字 20px */
+  font-size: 1.25rem;
   font-weight: bold;
   color: var(--accent-green);
   margin-top: 2px;
 }
 
 .record-subhint {
-  font-size: 0.875rem;         /* 輔助提示 14px */
+  font-size: 0.8rem;
   color: #8e8e93;
 }
 
