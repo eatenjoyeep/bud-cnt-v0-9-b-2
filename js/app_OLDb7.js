@@ -216,21 +216,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnSettings = document.getElementById('btn-settings');
   const btnToggleEye = document.getElementById('btn-toggle-eye');
   
-  // 🌸 兩層式目標管理 Modal 元素
   const targetDialog = document.getElementById('target-dialog');
-  const targetLayer1 = document.getElementById('target-layer-1');
-  const targetLayer2 = document.getElementById('target-layer-2');
-  const btnCloseTargetDialog = document.getElementById('btn-close-target-dialog');
-  const btnBackToLayer1 = document.getElementById('btn-back-to-layer1');
-  
-  const btnSetActivePreset = document.getElementById('btn-set-active-preset');
-  const settingTitleSingle = document.getElementById('setting-title-single');
-  const settingTargetSingle = document.getElementById('setting-target-single');
-  const settingCountSingle = document.getElementById('setting-count-single');
-  const btnResetSinglePreset = document.getElementById('btn-reset-single-preset');
-  const btnSaveSinglePreset = document.getElementById('btn-save-single-preset');
-
-  let currentEditingIndex = 0; // 當前正在第二層編輯的項目索引 (0, 1, 2)
+  const btnSaveTarget = document.getElementById('btn-save-target');
+  const btnResetAllPresets = document.getElementById('btn-reset-all-presets');
 
   const recordsDialog = document.getElementById('records-dialog');
   const recordStreak = document.getElementById('record-streak');
@@ -253,7 +241,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const resetModalMsg = document.getElementById('reset-modal-msg');
   const btnConfirmReset = document.getElementById('btn-confirm-reset');
   const btnCancelReset = document.getElementById('btn-cancel-reset');
-  let resetActionType = "card"; // 'card', 'history'
+  let resetActionType = "current"; // 'current', 'card', 'all_presets', 'history'
   let pendingResetIndex = -1;
   
   const goalDialog = document.getElementById('goal-dialog');
@@ -535,138 +523,94 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // --------------------------------------------------------------------------
-  // 🎯 兩層式持誦與目標管理 Modal (Layer 1 總覽選取 & Layer 2 單卡編輯)
+  // 🎯 點擊左上角深灰膠囊：開啟 3 組預設卡片管理 Modal
   // --------------------------------------------------------------------------
-  
-  // 渲染第一層功課總覽列表 (以暖金光環 `is-active-card` 圈圍選中的功課)
-  function renderTargetLayer1Data() {
+  function renderTargetDialogData() {
     for (let i = 0; i < 3; i++) {
       const preset = appState.presets[i] || CONFIG.presets[i];
-      document.getElementById(`card-title-display-${i}`).textContent = preset.title;
-      document.getElementById(`card-target-display-${i}`).textContent = preset.target === 0 ? '∞' : preset.target;
-      document.getElementById(`card-count-display-${i}`).textContent = preset.count || 0;
+      document.getElementById(`setting-title-${i}`).value = preset.title;
+      document.getElementById(`setting-target-${i}`).value = preset.target;
+      document.getElementById(`card-count-${i}`).textContent = preset.count || 0;
 
       const card = document.getElementById(`preset-card-${i}`);
       const isCurrentActive = (i === appState.activePresetIndex);
-      
-      // 🌟 以暖金光環與深暖暗色將選中的功課圈起來
       card.classList.toggle('is-active-card', isCurrentActive);
       
-      const badge = document.getElementById(`active-badge-${i}`);
-      if (badge) {
-        badge.style.display = isCurrentActive ? 'inline-block' : 'none';
+      const selectBtn = card.querySelector('.btn-card-select');
+      if (selectBtn) {
+        selectBtn.textContent = isCurrentActive ? '啟用中' : '切換至此組合';
+        selectBtn.disabled = isCurrentActive;
       }
     }
   }
 
-  // 開啟第二層單卡詳情編輯
-  function openTargetLayer2(idx) {
-    currentEditingIndex = idx;
-    const preset = appState.presets[idx] || CONFIG.presets[idx];
-
-    settingTitleSingle.value = preset.title;
-    settingTargetSingle.value = preset.target;
-    settingCountSingle.textContent = preset.count || 0;
-
-    // 更新「設為當前持誦功課」按鈕狀態
-    const isCurrentActive = (idx === appState.activePresetIndex);
-    if (isCurrentActive) {
-      btnSetActivePreset.textContent = '✓ 當前持誦中';
-      btnSetActivePreset.classList.add('is-already-active');
-      btnSetActivePreset.disabled = true;
-    } else {
-      btnSetActivePreset.textContent = '🪷 設為當前持誦功課';
-      btnSetActivePreset.classList.remove('is-already-active');
-      btnSetActivePreset.disabled = false;
-    }
-
-    targetLayer1.classList.add('is-hidden');
-    targetLayer2.classList.remove('is-hidden');
-  }
-
-  // 返回第一層總覽列表
-  function returnToTargetLayer1() {
-    targetLayer2.classList.add('is-hidden');
-    targetLayer1.classList.remove('is-hidden');
-    renderTargetLayer1Data();
-  }
-
-  // 開啟目標管理 Modal
   btnTarget.addEventListener('click', (e) => {
     e.stopPropagation();
     setDimmedMode(false);
-    returnToTargetLayer1();
+    renderTargetDialogData();
     targetDialog.showModal();
   });
 
-  // 關閉目標管理 Modal
-  btnCloseTargetDialog.addEventListener('click', () => {
-    targetDialog.close();
-  });
-
-  // 第一層卡片點擊事件（點擊任何卡片均滑入第二層編輯詳情）
-  document.querySelectorAll('.preset-card-item').forEach(card => {
-    card.addEventListener('click', (e) => {
-      const idx = parseInt(e.currentTarget.dataset.index, 10);
-      if (!isNaN(idx)) {
-        openTargetLayer2(idx);
+  // 監聽卡片切換按鈕
+  document.querySelectorAll('.btn-card-select').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const idx = parseInt(e.target.dataset.index, 10);
+      if (!isNaN(idx) && idx !== appState.activePresetIndex) {
+        appState.activePresetIndex = idx;
+        updateUI();
+        StorageModule.saveData(appState);
+        renderTargetDialogData();
       }
     });
   });
 
-  // 第二層：返回第一層按鈕
-  btnBackToLayer1.addEventListener('click', () => {
-    returnToTargetLayer1();
+  // ↺ 清空單一卡片組合
+  document.querySelectorAll('.btn-card-reset').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const idx = parseInt(e.target.dataset.index, 10);
+      if (isNaN(idx)) return;
+
+      const targetTitle = appState.presets[idx].title || `組合${idx + 1}`;
+
+      if (appState.confirmReset) {
+        resetActionType = "card";
+        pendingResetIndex = idx;
+        resetModalTitle.textContent = `確認歸零「${targetTitle}」？`;
+        resetModalMsg.textContent = "此操作將重置該組合的已完成次數。";
+        resetDialog.showModal();
+      } else {
+        appState.presets[idx].count = 0;
+        updateUI();
+        StorageModule.saveData(appState);
+        renderTargetDialogData();
+      }
+    });
   });
 
-  // 第二層：「設為當前持誦功課」主按鈕
-  btnSetActivePreset.addEventListener('click', () => {
-    if (currentEditingIndex !== appState.activePresetIndex) {
-      appState.activePresetIndex = currentEditingIndex;
-      updateUI();
-      StorageModule.saveData(appState);
+  // ⚠️ 一鍵清空全部 3 組 (強制彈出二次確認)
+  btnResetAllPresets.addEventListener('click', () => {
+    resetActionType = "all_presets";
+    resetModalTitle.textContent = "⚠️ 確認清空全部 3 組？";
+    resetModalMsg.textContent = "此操作將強制重置所有 3 組項目的持誦次數，無法復原。";
+    resetDialog.showModal();
+  });
 
-      btnSetActivePreset.textContent = '✓ 當前持誦中';
-      btnSetActivePreset.classList.add('is-already-active');
-      btnSetActivePreset.disabled = true;
+  // 保存持誦組合卡片
+  btnSaveTarget.addEventListener('click', () => {
+    for (let i = 0; i < 3; i++) {
+      let tVal = document.getElementById(`setting-title-${i}`).value.trim();
+      if (!tVal) tVal = CONFIG.presets[i].title;
 
-      renderTargetLayer1Data();
+      let numVal = parseInt(document.getElementById(`setting-target-${i}`).value, 10);
+      if (isNaN(numVal) || numVal < 0) numVal = 0;
+
+      appState.presets[i].title = tVal;
+      appState.presets[i].target = numVal;
     }
-  });
-
-  // 第二層：↺ 歸零此功課次數 (單項歸零)
-  btnResetSinglePreset.addEventListener('click', () => {
-    const targetTitle = appState.presets[currentEditingIndex].title || `組合${currentEditingIndex + 1}`;
-
-    if (appState.confirmReset) {
-      resetActionType = "card";
-      pendingResetIndex = currentEditingIndex;
-      resetModalTitle.textContent = `確認歸零「${targetTitle}」？`;
-      resetModalMsg.textContent = "此操作將重置該功課的已完成次數，無法復原。";
-      resetDialog.showModal();
-    } else {
-      appState.presets[currentEditingIndex].count = 0;
-      settingCountSingle.textContent = 0;
-      updateUI();
-      StorageModule.saveData(appState);
-    }
-  });
-
-  // 第二層：儲存單項修訂並返回第一層
-  btnSaveSinglePreset.addEventListener('click', () => {
-    let tVal = settingTitleSingle.value.trim();
-    if (!tVal) tVal = CONFIG.presets[currentEditingIndex].title;
-
-    let numVal = parseInt(settingTargetSingle.value, 10);
-    if (isNaN(numVal) || numVal < 0) numVal = 0;
-
-    appState.presets[currentEditingIndex].title = tVal;
-    appState.presets[currentEditingIndex].target = numVal;
 
     updateUI();
     StorageModule.saveData(appState);
-
-    returnToTargetLayer1();
+    targetDialog.close();
   });
 
   // --------------------------------------------------------------------------
@@ -725,8 +669,10 @@ document.addEventListener('DOMContentLoaded', () => {
   btnConfirmReset.addEventListener('click', () => {
     if (resetActionType === "card" && pendingResetIndex >= 0) {
       appState.presets[pendingResetIndex].count = 0;
-      settingCountSingle.textContent = 0;
-      renderTargetLayer1Data();
+      renderTargetDialogData();
+    } else if (resetActionType === "all_presets") {
+      appState.presets.forEach(p => p.count = 0);
+      renderTargetDialogData();
     } else if (resetActionType === "history") {
       appState.history.todayCount = 0;
       appState.history.monthCount = 0;

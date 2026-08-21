@@ -85,103 +85,95 @@
 
   </main>
 
-  <!-- 1. 🎯 持誦與目標管理 Modal (兩層式架構：第一層總覽選取，第二層單卡編輯) -->
+  <!-- 1. 🎯 持誦與目標管理 Modal (3 組深灰卡片，包含名稱、目標、已完成及單組/總重置) -->
   <dialog id="target-dialog" class="modal">
     <div class="modal-content">
-      
-      <!-- 🌸 第一層：功課總覽列表 (Layer 1) -->
-      <div id="target-layer-1">
-        <h2>持誦目標與功課</h2>
-        <hr>
-        <div class="preset-cards-container">
-          
-          <!-- 組合一 -->
-          <div class="preset-card-item" id="preset-card-0" data-index="0">
-            <div class="preset-card-main">
-              <div class="preset-card-title-row">
-                <span class="preset-title" id="card-title-display-0">南無阿彌陀佛</span>
-                <span class="active-badge" id="active-badge-0">🪷 啟用中</span>
-              </div>
-              <div class="preset-card-info-row">
-                <span>已完成：<strong id="card-count-display-0">0</strong> 次 / 目標：<span id="card-target-display-0">1080</span> 次</span>
-              </div>
-            </div>
-            <div class="preset-card-arrow">＞</div>
+      <h2>持誦項目與目標管理</h2>
+      <hr>
+      <div class="preset-cards-container">
+        
+        <!-- 組合一 -->
+        <div class="preset-card" id="preset-card-0">
+          <div class="preset-card-header">
+            <span class="preset-tag">組合一</span>
+            <span class="active-badge" id="active-badge-0">啟用中</span>
           </div>
-
-          <!-- 組合二 -->
-          <div class="preset-card-item" id="preset-card-1" data-index="1">
-            <div class="preset-card-main">
-              <div class="preset-card-title-row">
-                <span class="preset-title" id="card-title-display-1">南無觀世音菩薩</span>
-                <span class="active-badge" id="active-badge-1">🪷 啟用中</span>
-              </div>
-              <div class="preset-card-info-row">
-                <span>已完成：<strong id="card-count-display-1">0</strong> 次 / 目標：<span id="card-target-display-1">1080</span> 次</span>
-              </div>
-            </div>
-            <div class="preset-card-arrow">＞</div>
-          </div>
-
-          <!-- 組合三 -->
-          <div class="preset-card-item" id="preset-card-2" data-index="2">
-            <div class="preset-card-main">
-              <div class="preset-card-title-row">
-                <span class="preset-title" id="card-title-display-2">大悲咒</span>
-                <span class="active-badge" id="active-badge-2">🪷 啟用中</span>
-              </div>
-              <div class="preset-card-info-row">
-                <span>已完成：<strong id="card-count-display-2">0</strong> 次 / 目標：<span id="card-target-display-2">21</span> 次</span>
-              </div>
-            </div>
-            <div class="preset-card-arrow">＞</div>
-          </div>
-
-        </div>
-
-        <div class="modal-actions center-actions">
-          <button id="btn-close-target-dialog" type="button" class="btn-full-width">關閉</button>
-        </div>
-      </div>
-
-      <!-- ✏️ 第二層：單一功課詳情與修改 (Layer 2 - 預設隱藏) -->
-      <div id="target-layer-2" class="is-hidden">
-        <div class="layer2-header">
-          <button id="btn-back-to-layer1" type="button" class="btn-icon-back">＜ 返回</button>
-          <h2>編輯持誦功課</h2>
-        </div>
-        <hr>
-
-        <!-- 設為當前持誦主要動作鈕 -->
-        <div class="layer2-active-action">
-          <button id="btn-set-active-preset" type="button" class="btn-set-active">🪷 設為當前持誦功課</button>
-        </div>
-
-        <div class="layer2-form">
           <label class="vertical-field">
-            <span>功課名稱：</span>
-            <input type="text" id="setting-title-single" maxlength="15" placeholder="例如：南無阿彌陀佛">
+            <span>名稱：</span>
+            <input type="text" id="setting-title-0" maxlength="15" placeholder="例如：南無阿彌陀佛">
           </label>
-
-          <label class="vertical-field margin-top-sm">
-            <span>目標次數 (0 為無限)：</span>
-            <input type="number" id="setting-target-single" min="0" max="999999" class="input-target-full">
-          </label>
-
-          <div class="card-progress-row margin-top-sm">
-            <span>已完成次數：<strong id="setting-count-single">0</strong> 次</span>
+          <div class="card-progress-row">
+            <span>已完成：<strong id="card-count-0">0</strong> 次</span>
+            <label class="inline-target-label">
+              <span>目標：</span>
+              <input type="number" id="setting-target-0" min="0" max="999999" class="input-target-inline">
+              <span>次</span>
+            </label>
           </div>
-
-          <div class="modal-danger-zone">
-            <button id="btn-reset-single-preset" type="button" class="btn-danger-outline">↺ 歸零此功課次數</button>
+          <div class="card-action-group">
+            <button type="button" class="btn-card-select" data-index="0">切換至此組合</button>
+            <button type="button" class="btn-card-reset" data-index="0">↺ 清空本組</button>
           </div>
         </div>
 
-        <div class="modal-actions center-actions">
-          <button id="btn-save-single-preset" type="button" class="btn-full-width">儲存並返回</button>
+        <!-- 組合二 -->
+        <div class="preset-card" id="preset-card-1">
+          <div class="preset-card-header">
+            <span class="preset-tag">組合二</span>
+            <span class="active-badge" id="active-badge-1">啟用中</span>
+          </div>
+          <label class="vertical-field">
+            <span>名稱：</span>
+            <input type="text" id="setting-title-1" maxlength="15" placeholder="例如：南無觀世音菩薩">
+          </label>
+          <div class="card-progress-row">
+            <span>已完成：<strong id="card-count-1">0</strong> 次</span>
+            <label class="inline-target-label">
+              <span>目標：</span>
+              <input type="number" id="setting-target-1" min="0" max="999999" class="input-target-inline">
+              <span>次</span>
+            </label>
+          </div>
+          <div class="card-action-group">
+            <button type="button" class="btn-card-select" data-index="1">切換至此組合</button>
+            <button type="button" class="btn-card-reset" data-index="1">↺ 清空本組</button>
+          </div>
         </div>
+
+        <!-- 組合三 -->
+        <div class="preset-card" id="preset-card-2">
+          <div class="preset-card-header">
+            <span class="preset-tag">組合三</span>
+            <span class="active-badge" id="active-badge-2">啟用中</span>
+          </div>
+          <label class="vertical-field">
+            <span>名稱：</span>
+            <input type="text" id="setting-title-2" maxlength="15" placeholder="例如：大悲咒">
+          </label>
+          <div class="card-progress-row">
+            <span>已完成：<strong id="card-count-2">0</strong> 次</span>
+            <label class="inline-target-label">
+              <span>目標：</span>
+              <input type="number" id="setting-target-2" min="0" max="999999" class="input-target-inline">
+              <span>次</span>
+            </label>
+          </div>
+          <div class="card-action-group">
+            <button type="button" class="btn-card-select" data-index="2">切換至此組合</button>
+            <button type="button" class="btn-card-reset" data-index="2">↺ 清空本組</button>
+          </div>
+        </div>
+
       </div>
 
+      <!-- 底部總重置按鈕與儲存 -->
+      <div class="modal-danger-zone">
+        <button id="btn-reset-all-presets" type="button" class="btn-danger-outline">⚠️ 一鍵清空全部 3 組</button>
+      </div>
+
+      <div class="modal-actions">
+        <button id="btn-save-target" type="button">確定並儲存</button>
+      </div>
     </div>
   </dialog>
 

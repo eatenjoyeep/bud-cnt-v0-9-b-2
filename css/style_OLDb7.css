@@ -272,7 +272,7 @@ legend {
   background-color: #121214;
   border: 1px solid #333336;
   border-radius: 8px;
-  color: var(--color-gold);
+  color: #FFD700;
   font-size: 1rem;             /* 16px 主要輸入字體 (防 iOS 自動聚焦縮放) */
   font-weight: 700;
   transition: border-color 0.2s ease;
@@ -307,179 +307,70 @@ legend {
 }
 
 .margin-top-sm {
-  margin-top: 10px;
+  margin-top: 8px;
 }
 
 /* ==========================================
-   🎯 兩層式持誦管理 Modal 樣式 (Layer 1 光環列表 & Layer 2 詳情)
+   🎯 持誦管理 Modal 3 組獨立卡片排版重新設計
    ========================================== */
 .preset-cards-container {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
   max-height: 58vh;
   overflow-y: auto;
   margin-bottom: 14px;
   padding-right: 2px;
 }
 
-/* 第一層功課卡片 */
-.preset-card-item {
+.preset-card {
   background-color: #141416;
   border: 1px solid #2a2a2d;
-  border-radius: 16px;
-  padding: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  cursor: pointer;
-  transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-.preset-card-item:active {
-  transform: scale(0.98);
-}
-
-/* 🌟 已選項目：以暖金光環將其圈起來 (Glow Light Ring) */
-.preset-card-item.is-active-card {
-  border: 1.5px solid var(--color-gold);
-  background-color: #1c1914;
-  box-shadow: 0 0 18px var(--color-gold-glow), inset 0 0 12px rgba(230, 194, 128, 0.12);
-}
-
-.preset-card-main {
+  border-radius: 14px;
+  padding: 14px 14px 12px 14px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  flex: 1;
-}
-
-.preset-card-title-row {
-  display: flex;
-  align-items: center;
   gap: 10px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.preset-title {
-  font-size: 1.25rem;          /* 20px 醒目聖號標題 */
-  font-weight: 700;
-  color: var(--text-bright);
+/* 啟用中卡片：暖金邊框亮起 */
+.preset-card.is-active-card {
+  border: 1px solid var(--color-gold);
+  box-shadow: 0 0 12px var(--color-gold-glow);
+  background-color: #181714;
 }
 
-.preset-card-item.is-active-card .preset-title {
-  color: var(--color-gold);
+.preset-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* 📌 輔助標籤：14px */
+.preset-tag {
+  font-size: 0.875rem;         /* 14px 輔助標籤 */
+  color: #9a9a9f;
+  font-weight: 600;
+  letter-spacing: 0.5px;
 }
 
 .active-badge {
   display: none;
-  font-size: 0.875rem;         /* 14px 狀態標籤 */
+  font-size: 0.875rem;        /* 14px 狀態標籤 */
   color: var(--color-gold);
   border: 1px solid var(--color-gold);
-  padding: 2px 8px;
-  border-radius: 10px;
+  padding: 3px 10px;
+  border-radius: 12px;
   background: rgba(230, 194, 128, 0.12);
   font-weight: 600;
 }
 
-.preset-card-info-row {
-  font-size: 0.875rem;         /* 14px 輔助資訊 */
-  color: #a0a0a5;
+.preset-card.is-active-card .active-badge {
+  display: inline-block;
 }
 
-.preset-card-info-row strong {
-  color: var(--accent-green);
-  font-weight: 700;
-  font-size: 1rem;            /* 16px 完成次數 */
-}
-
-.preset-card-arrow {
-  font-size: 1.25rem;          /* 20px 箭頭 */
-  color: #66666a;
-  font-weight: 300;
-  padding-left: 6px;
-}
-
-.preset-card-item.is-active-card .preset-card-arrow {
-  color: var(--color-gold);
-}
-
-/* 第二層標題與返回按鈕 */
-.layer2-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: relative;
-  margin-bottom: 10px;
-}
-
-.layer2-header h2 {
-  margin-bottom: 0;
-  flex-grow: 1;
-}
-
-.btn-icon-back {
-  background: transparent;
-  border: none;
-  color: var(--color-gold);
-  font-size: 0.95rem;          /* 15px */
-  font-weight: 600;
-  cursor: pointer;
-  padding: 4px 8px 4px 0;
-}
-
-.layer2-active-action {
-  margin-bottom: 16px;
-}
-
-.btn-set-active {
-  width: 100%;
-  height: 46px;
-  background-color: var(--color-gold);
-  color: #000000;
-  border: none;
-  border-radius: 12px;
-  font-size: 1rem;             /* 16px 主要按鈕 */
-  font-weight: 700;
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(230, 194, 128, 0.25);
-  transition: transform 0.1s ease, background-color 0.2s ease;
-}
-
-.btn-set-active:active {
-  transform: scale(0.97);
-}
-
-.btn-set-active:disabled,
-.btn-set-active.is-already-active {
-  background-color: rgba(76, 217, 100, 0.15);
-  color: var(--accent-green);
-  border: 1px solid var(--accent-green);
-  box-shadow: none;
-  cursor: default;
-}
-
-.input-target-full {
-  width: 100%;
-  height: 42px;
-  padding: 8px 12px;
-  background-color: #121214;
-  border: 1px solid #333336;
-  border-radius: 8px;
-  color: #ffffff;
-  font-size: 1rem;             /* 16px 主要數字 (防 iOS 自動縮放) */
-  font-weight: 700;
-}
-
-.btn-full-width {
-  width: 100%;
-}
-
-.is-hidden {
-  display: none !important;
-}
-
-/* 📊 數據與按鈕組 */
+/* 📊 數據區排版重新設計：雙欄佈局給予極致呼吸空間 */
 .card-progress-row {
   display: flex;
   align-items: center;
@@ -490,6 +381,7 @@ legend {
   border: 1px solid #222225;
 }
 
+/* 📌 主要文字：16px */
 .card-progress-row > span {
   font-size: 1rem;             /* 16px 主要文字 */
   color: #e0e0e5;
@@ -498,6 +390,7 @@ legend {
   gap: 6px;
 }
 
+/* 🟢 醒目完成數字：20px 綠光加粗 */
 .card-progress-row strong {
   color: var(--accent-green);
   font-weight: 700;
@@ -505,8 +398,76 @@ legend {
   text-shadow: 0 0 8px rgba(76, 217, 100, 0.4);
 }
 
+.inline-target-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 1rem;             /* 16px 主要文字 */
+  color: #e0e0e5;
+}
+
+.input-target-inline {
+  width: 80px;                 /* 加寬輸入框 */
+  height: 36px;                /* 加高輸入框 */
+  padding: 4px 8px;
+  font-size: 1rem;             /* 16px 主要數字 */
+  background: #141416;
+  border: 1px solid var(--accent-green);
+  color: #ffffff;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: 700;
+}
+
+/* 🔘 按鈕組排版重構 */
+.card-action-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-top: 2px;
+}
+
+.btn-card-select {
+  background-color: var(--color-gold);
+  color: #000000;
+  border: none;
+  height: 40px;                /* 40px 大觸控高度 */
+  padding: 0 16px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 1rem;             /* 16px 主要按鈕字體 */
+  cursor: pointer;
+  flex: 1;
+  letter-spacing: 0.5px;
+}
+
+.btn-card-select:disabled {
+  background-color: #2a2a2d;
+  color: #555558;
+  cursor: default;
+}
+
+.btn-card-reset {
+  background-color: transparent;
+  color: #ff453a;
+  border: 1px solid rgba(255, 69, 58, 0.6);
+  height: 40px;
+  padding: 0 12px;
+  border-radius: 8px;
+  font-size: 0.875rem;         /* 14px 輔助按鈕字體 */
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  white-space: nowrap;
+}
+
+.btn-card-reset:active {
+  background-color: rgba(255, 69, 58, 0.2);
+}
+
 .modal-danger-zone {
-  margin-top: 12px;
+  margin-top: 8px;
   margin-bottom: 12px;
   text-align: center;
 }
