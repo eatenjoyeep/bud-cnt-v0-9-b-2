@@ -185,18 +185,18 @@ body.is-dimmed #btn-settings {
 }
 
 /* ==========================================
-   4. Modal 彈窗樣式 (全面依業界標準 20px / 16px / 14px 重構)
+   4. Modal 彈窗樣式
    ========================================== */
 .modal {
   border: 1px solid #333;
-  border-radius: 20px;
+  border-radius: 16px;
   background-color: var(--dialog-bg);
   color: #ffffff;
   padding: 0;
   margin: auto;
-  width: 94vw;                 /* 橫向極致擴展，全面解鎖手機螢幕寬度 */
-  max-width: 440px;            /* 升級最大寬度至 440px */
-  box-shadow: 0 12px 36px rgba(0,0,0,0.95);
+  width: 380px;               /* 擴大寬度 (原 340px) 賦予文字充裕空間 */
+  max-width: 92vw;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.9);
 }
 
 .modal::backdrop {
@@ -204,33 +204,29 @@ body.is-dimmed #btn-settings {
 }
 
 .modal-content {
-  padding: 20px 16px;          /* 優化上下左右邊距 */
+  padding: 18px 16px;          /* 優化兩側留白 (原 20px)，讓大字不擠壓 */
 }
 
 .text-center {
   text-align: center;
 }
 
-/* 📌 標題標準：20px */
 .modal-content h2 {
-  font-size: 1.25rem;          /* 20px 業界標準標題 */
+  font-size: 1.25rem;          /* 標題 20px (業界標準) */
   font-weight: 700;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   text-align: center;
-  color: var(--text-bright);
 }
 
-/* 📌 輔助說明標準：14px */
 .modal-content p {
-  font-size: 0.875rem;         /* 14px 業界標準輔助字 */
+  font-size: 0.875rem;         /* 輔助說明 14px (業界標準) */
   color: #aaa;
   margin-bottom: 12px;
-  line-height: 1.4;
 }
 
 .modal-content hr {
   border: none;
-  border-top: 1px solid #2d2d30;
+  border-top: 1px solid #333;
   margin-bottom: 14px;
 }
 
@@ -239,66 +235,56 @@ fieldset {
   margin-bottom: 14px;
 }
 
-/* ⚙️ 齒輪設定彈窗分組標題 */
+/* ⚙️ 齒輪設定彈窗分組標題 (金色側邊條區隔) */
 legend {
-  font-size: 1rem;             /* 16px 主要字體 */
+  font-size: 1rem;             /* 主要文字 16px */
   color: var(--color-gold);
   font-weight: 600;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   padding-left: 8px;
   border-left: 3px solid var(--color-gold);
   line-height: 1.2;
 }
 
-/* 輸入欄位通用優化 */
 .vertical-field {
   display: flex;
   flex-direction: column;
   gap: 6px;
   text-align: left;
-  width: 100%;
 }
 
 .vertical-field span {
-  font-size: 0.875rem;         /* 14px 輔助標籤 */
-  color: #a0a0a5;
-  font-weight: 500;
+  font-size: 0.875rem;         /* 輔助標籤 14px */
+  color: #b0b0b5;
 }
 
 .vertical-field input[type="text"] {
   width: 100%;
-  height: 42px;                /* 增大觸碰區域 */
-  padding: 8px 12px;
-  background-color: #121214;
-  border: 1px solid #333336;
+  padding: 8px 10px;
+  background-color: #121212;
+  border: 1px solid #333333;
   border-radius: 8px;
   color: #FFD700;
-  font-size: 1rem;             /* 16px 主要輸入字體 (防 iOS 自動聚焦縮放) */
+  font-size: 1rem;             /* 主要文字 16px (防止 iOS 自動對焦縮放) */
   font-weight: 700;
-  transition: border-color 0.2s ease;
 }
 
-.vertical-field input[type="text"]:focus {
-  border-color: var(--color-gold);
-  outline: none;
-}
-
-/* ⚙️ 設定彈窗開關項 (16px 主要字體) */
+/* ⚙️ 齒輪設定彈窗內的文字：改為純白 (#ffffff) 與銳利字重，確保最高對比 */
 .toggle-label, .input-label {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 0;
-  font-size: 1rem;             /* 16px 主要字體 */
-  color: #ffffff;
-  font-weight: 500;
+  padding: 8px 0;
+  font-size: 1rem;             /* 主要文字 16px (業界標準) */
+  color: #ffffff;      /* 改為純白，徹底解決對比偏低問題 */
+  font-weight: 500;    /* 微調字重，讓放大後的文字邊緣更銳利清析 */
 }
 
+/* ⚙️ 防誤觸門檻數字輸入框（修復原本太長與未配樣式問題） */
 #setting-streak-threshold {
-  width: 75px;
-  height: 36px;
-  padding: 4px 8px;
-  font-size: 1rem;             /* 16px 主要數字 */
+  width: 70px;
+  padding: 6px;
+  font-size: 1rem;             /* 主要數字 16px */
   background: #000000;
   border: 1px solid var(--accent-green);
   color: #ffffff;
@@ -311,155 +297,129 @@ legend {
 }
 
 /* ==========================================
-   🎯 持誦管理 Modal 3 組獨立卡片排版重新設計
+   🎯 持誦管理 Modal 3 組獨立卡片樣式
    ========================================== */
 .preset-cards-container {
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  max-height: 58vh;
+  gap: 12px;
+  max-height: 55vh;
   overflow-y: auto;
-  margin-bottom: 14px;
-  padding-right: 2px;
+  margin-bottom: 12px;
 }
 
 .preset-card {
-  background-color: #141416;
-  border: 1px solid #2a2a2d;
-  border-radius: 14px;
-  padding: 14px 14px 12px 14px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  background-color: #121214;
+  border: 1px solid #2c2c2e;
+  border-radius: 12px;
+  padding: 12px 14px;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* 啟用中卡片：暖金邊框亮起 */
+/* 啟用中卡片：亮起暖金邊框 */
 .preset-card.is-active-card {
   border: 1px solid var(--color-gold);
-  box-shadow: 0 0 12px var(--color-gold-glow);
-  background-color: #181714;
+  box-shadow: 0 0 10px var(--color-gold-glow);
 }
 
 .preset-card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 8px;
 }
 
-/* 📌 輔助標籤：14px */
 .preset-tag {
-  font-size: 0.875rem;         /* 14px 輔助標籤 */
-  color: #9a9a9f;
+  font-size: 0.875rem;         /* 輔助標籤 14px (業界標準) */
+  color: #8e8e93;
   font-weight: 600;
-  letter-spacing: 0.5px;
 }
 
 .active-badge {
   display: none;
-  font-size: 0.875rem;        /* 14px 狀態標籤 */
+  font-size: 0.8125rem;        /* 13px 狀態徽章 */
   color: var(--color-gold);
   border: 1px solid var(--color-gold);
-  padding: 3px 10px;
-  border-radius: 12px;
-  background: rgba(230, 194, 128, 0.12);
-  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: rgba(230, 194, 128, 0.1);
 }
 
 .preset-card.is-active-card .active-badge {
   display: inline-block;
 }
 
-/* 📊 數據區排版重新設計：雙欄佈局給予極致呼吸空間 */
 .card-progress-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #0a0a0c;
-  padding: 10px 12px;
-  border-radius: 10px;
-  border: 1px solid #222225;
+  font-size: 1rem;             /* 主要文字 16px (業界標準) */
+  color: #d1d1d6;
+  margin: 10px 0;
 }
 
-/* 📌 主要文字：16px */
-.card-progress-row > span {
-  font-size: 1rem;             /* 16px 主要文字 */
-  color: #e0e0e5;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-/* 🟢 醒目完成數字：20px 綠光加粗 */
+/* 🟢 卡片內「已完成」數字：亮綠光 + 加粗 + 醒目放大至 20px */
 .card-progress-row strong {
   color: var(--accent-green);
   font-weight: 700;
-  font-size: 1.25rem;          /* 20px 醒目數字 */
-  text-shadow: 0 0 8px rgba(76, 217, 100, 0.4);
+  font-size: 1.25rem;          /* 醒目完成數字 20px */
+  text-shadow: 0 0 6px rgba(76, 217, 100, 0.35);
 }
 
 .inline-target-label {
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-size: 1rem;             /* 16px 主要文字 */
-  color: #e0e0e5;
+  gap: 4px;
+  font-size: 1rem;             /* 主要文字 16px */
 }
 
 .input-target-inline {
-  width: 80px;                 /* 加寬輸入框 */
-  height: 36px;                /* 加高輸入框 */
-  padding: 4px 8px;
-  font-size: 1rem;             /* 16px 主要數字 */
-  background: #141416;
+  width: 75px;
+  padding: 6px;
+  font-size: 1rem;             /* 輸入框數字 16px (業界標準) */
+  background: #000;
   border: 1px solid var(--accent-green);
-  color: #ffffff;
-  border-radius: 8px;
+  color: #fff;
+  border-radius: 6px;
   text-align: center;
-  font-weight: 700;
+  font-weight: 600;
 }
 
-/* 🔘 按鈕組排版重構 */
 .card-action-group {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 10px;
-  margin-top: 2px;
+  gap: 8px;
+  margin-top: 10px;
 }
 
 .btn-card-select {
   background-color: var(--color-gold);
-  color: #000000;
+  color: #000;
   border: none;
-  height: 40px;                /* 40px 大觸控高度 */
-  padding: 0 16px;
+  padding: 8px 12px;
   border-radius: 8px;
-  font-weight: 700;
-  font-size: 1rem;             /* 16px 主要按鈕字體 */
+  font-weight: 600;
+  font-size: 1rem;             /* 主要選擇按鈕 16px (業界標準) */
   cursor: pointer;
   flex: 1;
-  letter-spacing: 0.5px;
 }
 
 .btn-card-select:disabled {
-  background-color: #2a2a2d;
-  color: #555558;
+  background-color: #2c2c2e;
+  color: #636366;
   cursor: default;
 }
 
 .btn-card-reset {
   background-color: transparent;
   color: #ff453a;
-  border: 1px solid rgba(255, 69, 58, 0.6);
-  height: 40px;
-  padding: 0 12px;
+  border: 1px solid #ff453a;
+  padding: 7px 10px;
   border-radius: 8px;
-  font-size: 0.875rem;         /* 14px 輔助按鈕字體 */
-  font-weight: 600;
+  font-size: 0.875rem;         /* 輔助動作按鈕 14px (業界標準) */
   cursor: pointer;
   transition: background-color 0.2s ease;
-  white-space: nowrap;
 }
 
 .btn-card-reset:active {
@@ -467,7 +427,7 @@ legend {
 }
 
 .modal-danger-zone {
-  margin-top: 8px;
+  margin-top: 10px;
   margin-bottom: 12px;
   text-align: center;
 }
@@ -476,11 +436,11 @@ legend {
   width: 100%;
   background: transparent;
   color: #ff3b30;
-  border: 1px solid rgba(255, 59, 48, 0.6);
-  height: 40px;
+  border: 1px solid #ff3b30;
+  padding: 10px 0;
   border-radius: 8px;
-  font-size: 0.875rem;         /* 14px 輔助按鈕字體 */
-  font-weight: 700;
+  font-size: 0.875rem;         /* 輔助清空按鈕 14px (業界標準) */
+  font-weight: bold;
   cursor: pointer;
 }
 
@@ -492,7 +452,7 @@ legend {
   display: flex;
   justify-content: flex-end;
   gap: 10px;
-  margin-top: 14px;
+  margin-top: 12px;
 }
 
 .between-actions {
@@ -507,12 +467,11 @@ legend {
   background-color: var(--accent-green);
   color: #000;
   border: none;
-  height: 44px;                /* 44px 標準高反饋按鈕 */
-  padding: 0 24px;
-  font-weight: 700;
-  border-radius: 10px;
+  padding: 12px 24px;
+  font-weight: bold;
+  border-radius: 8px;
   cursor: pointer;
-  font-size: 1rem;             /* 16px 主要按鈕字體 */
+  font-size: 1rem;             /* 底部確認按鈕 16px (業界標準) */
 }
 
 .modal-actions .btn-secondary {
@@ -530,7 +489,7 @@ legend {
   color: #ff3b30 !important;
   border: none !important;
   padding: 0 !important;
-  font-size: 0.875rem !important;/* 14px 輔助文字 */
+  font-size: 0.875rem !important;/* 輔助重置文字 14px */
   text-decoration: underline;
 }
 
@@ -546,8 +505,8 @@ legend {
   display: flex;
   flex-direction: column;
   background: #121214;
-  padding: 12px;
-  border-radius: 10px;
+  padding: 10px;
+  border-radius: 8px;
   border: 1px solid #222225;
 }
 
@@ -556,19 +515,19 @@ legend {
 }
 
 .record-label {
-  font-size: 0.875rem;         /* 14px 輔助文字 */
-  color: #a0a0a5;
+  font-size: 0.875rem;         /* 輔助文字 14px */
+  color: #b0b0b5;
 }
 
 .record-value {
-  font-size: 1.25rem;          /* 20px 醒目數字 */
+  font-size: 1.25rem;          /* 醒目數字 20px */
   font-weight: bold;
   color: var(--accent-green);
-  margin-top: 4px;
+  margin-top: 2px;
 }
 
 .record-subhint {
-  font-size: 0.875rem;         /* 14px 輔助提示 */
+  font-size: 0.875rem;         /* 輔助提示 14px */
   color: #8e8e93;
 }
 
@@ -779,12 +738,12 @@ legend {
 
 /* 🌸 聖號名稱顯示樣式（平衡清晰度與沉靜質感） */
 .mantra-title-display {
-  color: #F0D295;                           /* 🎨 香檳暖金 */
+  color: #F0D295;                           /* 🎨 香檳暖金：比舊版更亮更易讀，同時保留經典古樸格調 */
   font-size: 1.95rem;
   font-weight: 700;
   letter-spacing: 0;
   margin: 0;
-  text-shadow: 0 0 10px rgba(240, 210, 149, 0.4);
+  text-shadow: 0 0 10px rgba(240, 210, 149, 0.4); /* ✨ 同步微調微光柔和度 */
   text-align: center;
   white-space: nowrap;
   overflow: hidden;
